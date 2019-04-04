@@ -1,0 +1,355 @@
+[
+  {
+    "op": "core/column-addition",
+    "description": "Create column Suggested_OCLC_Number at index 25 based on column oclc_number using expression grel:value.replace(/.*/,'')",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "Suggested_OCLC_Number",
+    "columnInsertIndex": 25,
+    "baseColumnName": "oclc_number",
+    "expression": "grel:value.replace(/.*/,'')",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "description": "Create column API1 at index 3 by fetching URLs based on column online_identifier using expression grel",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "API1",
+    "columnInsertIndex": 3,
+    "baseColumnName": "online_identifier",
+    "urlExpression": "grel:'http://www.worldcat.org/webservices/catalog/search/sru?query=srw.bn=%22' + value + '%22&sortKeys=LibraryCount%2C%2C0&servicelevel=full&frbrGrouping=off&maximumRecords=1&wskey={YOUR_WSKEY}'",
+    "onError": "set-to-blank",
+    "delay": 300,
+    "cacheResponses": true,
+    "httpHeadersJson": [
+      {
+        "name": "authorization",
+        "value": ""
+      },
+      {
+        "name": "user-agent",
+        "value": "OpenRefine 3.0 [TRUNK]"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ]
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Lang1 at index 4 based on column API1 using expression grel:value.parseHtml().select('datafield[tag=040]>subfield[code=b]')[0].htmlText()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "newColumnName": "Lang1",
+    "columnInsertIndex": 4,
+    "baseColumnName": "API1",
+    "expression": "grel:value.parseHtml().select('datafield[tag=040]>subfield[code=b]')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column OCLC1 at index 4 based on column API1 using expression grel:value.parseHtml().select('controlfield')[0].htmlText()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "value",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": "eng",
+                "l": "eng"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "Lang1",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "Lang1"
+        }
+      ]
+    },
+    "newColumnName": "OCLC1",
+    "columnInsertIndex": 4,
+    "baseColumnName": "API1",
+    "expression": "grel:value.parseHtml().select('controlfield')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Suggested_OCLC_Number using expression grel:cells['OCLC1'].value",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "isBlank(value)",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": false,
+                "l": "false"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "OCLC1",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "OCLC1"
+        }
+      ]
+    },
+    "columnName": "Suggested_OCLC_Number",
+    "expression": "grel:cells['OCLC1'].value",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "description": "Create column API2 at index 2 by fetching URLs based on column print_identifier using expression grel",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "isBlank(value)",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": true,
+                "l": "true"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "Suggested_OCLC_Number",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "Suggested_OCLC_Number"
+        }
+      ]
+    },
+    "newColumnName": "API2",
+    "columnInsertIndex": 2,
+    "baseColumnName": "print_identifier",
+    "urlExpression": "grel:'http://www.worldcat.org/webservices/catalog/search/sru?query=srw.bn=%22' + value + '%22&sortKeys=LibraryCount%2C%2C0&servicelevel=full&frbrGrouping=off&maximumRecords=1&wskey={YOUR_WSKEY}'",
+    "onError": "set-to-blank",
+    "delay": 300,
+    "cacheResponses": true,
+    "httpHeadersJson": [
+      {
+        "name": "authorization",
+        "value": ""
+      },
+      {
+        "name": "user-agent",
+        "value": "OpenRefine 3.0 [TRUNK]"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ]
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column Lang2 at index 3 based on column API2 using expression grel:value.parseHtml().select('datafield[tag=040]>subfield[code=b]')[0].htmlText()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "isBlank(value)",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": true,
+                "l": "true"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "Suggested_OCLC_Number",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "Suggested_OCLC_Number"
+        }
+      ]
+    },
+    "newColumnName": "Lang2",
+    "columnInsertIndex": 3,
+    "baseColumnName": "API2",
+    "expression": "grel:value.parseHtml().select('datafield[tag=040]>subfield[code=b]')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/column-addition",
+    "description": "Create column OCLC2 at index 3 based on column API2 using expression grel:value.parseHtml().select('controlfield')[0].htmlText()",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "isBlank(value)",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": true,
+                "l": "true"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "Suggested_OCLC_Number",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "Suggested_OCLC_Number"
+        },
+        {
+          "omitError": false,
+          "expression": "value",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": "eng",
+                "l": "eng"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "Lang2",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "Lang2"
+        }
+      ]
+    },
+    "newColumnName": "OCLC2",
+    "columnInsertIndex": 3,
+    "baseColumnName": "API2",
+    "expression": "grel:value.parseHtml().select('controlfield')[0].htmlText()",
+    "onError": "set-to-blank"
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Suggested_OCLC_Number using expression grel:cells['OCLC2'].value",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": [
+        {
+          "omitError": false,
+          "expression": "isBlank(value)",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": true,
+                "l": "true"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "Suggested_OCLC_Number",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "Suggested_OCLC_Number"
+        },
+        {
+          "omitError": false,
+          "expression": "isBlank(value)",
+          "selectBlank": false,
+          "selection": [
+            {
+              "v": {
+                "v": false,
+                "l": "false"
+              }
+            }
+          ],
+          "selectError": false,
+          "invert": false,
+          "name": "OCLC2",
+          "omitBlank": false,
+          "type": "list",
+          "columnName": "OCLC2"
+        }
+      ]
+    },
+    "columnName": "Suggested_OCLC_Number",
+    "expression": "grel:cells['OCLC2'].value",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/column-reorder",
+    "description": "Reorder columns",
+    "columnNames": [
+      "publication_title",
+      "print_identifier",
+      "online_identifier",
+      "date_first_issue_online",
+      "num_first_vol_online",
+      "num_first_issue_online",
+      "date_last_issue_online",
+      "num_last_vol_online",
+      "num_last_issue_online",
+      "title_url",
+      "first_author",
+      "title_id",
+      "embargo_info",
+      "coverage_depth",
+      "coverage_notes",
+      "publisher_name",
+      "location",
+      "title_notes",
+      "staff_notes",
+      "vendor_id",
+      "oclc_collection_name",
+      "oclc_collection_id",
+      "oclc_entry_id",
+      "oclc_linkscheme",
+      "oclc_number",
+      "Suggested_OCLC_Number",
+      "ACTION"
+    ]
+  },
+  {
+    "op": "core/text-transform",
+    "description": "Text transform on cells in column Suggested_OCLC_Number using expression grel:if(value == '', 'Check manually', if (value == cells['oclc_number'].value, 'Good', value))",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "columnName": "Suggested_OCLC_Number",
+    "expression": "grel:if(value == '', 'Check manually', if (value == cells['oclc_number'].value, 'Good', value))",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  }
+]
