@@ -341,13 +341,13 @@
   },
   {
     "op": "core/text-transform",
-    "description": "Text transform on cells in column Suggested_OCLC_Number using expression grel:if(value == '', 'Check manually', if (value == cells['oclc_number'].value, 'Good', value))",
+    "description": "Text transform on cells in column Suggested_OCLC_Number using expression grel:if(or(value == '', isNull(value) ), 'Check manually', if (value == cells['oclc_number'].value, 'Good', value))",
     "engineConfig": {
       "mode": "row-based",
       "facets": []
     },
     "columnName": "Suggested_OCLC_Number",
-    "expression": "grel:if(value == '', 'Check manually', if (value == cells['oclc_number'].value, 'Good', value))",
+    "expression": "grel:if(or(value == '', isNull(value) ), 'Check manually', if (value == cells['oclc_number'].value, 'Good', value))",
     "onError": "keep-original",
     "repeat": false,
     "repeatCount": 10
